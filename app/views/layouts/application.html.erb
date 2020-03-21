@@ -11,9 +11,17 @@
 
   <body>
 
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <%# renders the partial navigation.html.erb %>
+    <%= render 'layouts/navigation' %>
 
-    <%= yield %>
+    <div class="container">
+
+      <%# renders the partial _messages.html.erb %>
+      <%= render 'layouts/messages' %>
+
+      <%= yield %>
+
+    </div>
+
   </body>
 </html>
