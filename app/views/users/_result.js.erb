@@ -1,0 +1,8 @@
+
+/*  this document is called from the controller stocks_controller because of the respond_to
+    and what the line below does is select the DIV with ID results in the my_portfolio.html.erb
+    and render the content of _results.html.erb in it.
+    To run JavaScript code within embedded ruby code, we need a method called escape_javascript().
+    Alternatively, I could have used <%#= j render 'users/result.html'  %>
+ */
+document.querySelector('#results').innerHTML = '<%= escape_javascript(render 'users/result.html') %>'

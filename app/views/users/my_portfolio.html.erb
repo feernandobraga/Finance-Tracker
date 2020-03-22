@@ -1,0 +1,52 @@
+<h1>My Portfolio</h1>
+
+
+<div class="search-area">
+
+  <h3>Search Stocks</h3>
+
+  <%# since there is NO model that we gonna use in this page,
+      we will user form_tag instead of form_for.
+      I need to pass where the form submits the information to, and the method
+      In this case, it's submitting to search_stock_path (which is stocks#search)
+      To enable Ajax, I had to add remote: true, which in HTML translates to data-remote="true" %>
+
+  <%= form_tag search_stock_path, remote: true, method: :get do %>
+
+    <div class="form-row">
+
+      <!--Input field-->
+      <div class="col-sm-9">
+
+        <%# the text_field_tag requires a name for the text field - :stock
+            it also requires what will be passed through the params - params[:stock]
+            Se I'm basically passing whatever is put into the text field will be the value
+            of my parameter stock.
+            The url will be something like: localhost/my_portfolio?stock="AAPL" %>
+        <%= text_field_tag :stock, params[:stock], placeholder: "Stock symbol",
+                           autofocus: true, class: "form-control form-control-lg" %>
+
+      </div> <!-- end input field-->
+
+
+      <!--Button field-->
+      <div class="col-sm-3">
+
+        <%# the button tag will create a button and it requires a type %>
+        <%= button_tag type: :submit, class: "btn btn-lg btn-success" do %>
+          <%= fa_icon 'search' %>
+        <% end %>
+
+      </div> <!--end button field-->
+
+
+    </div>
+
+  <% end %> <%# end form_tag %>
+</div>
+
+<%# this bit will handle the Ajax request and response %>
+<div id="results">
+
+</div>
+

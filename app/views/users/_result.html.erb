@@ -1,0 +1,14 @@
+<%# this will render the partial layouts/_messages.html.erb that display messages
+    when an invalid/blank stock symbol is entered %>
+<%= render 'layouts/messages' %>
+
+
+<% if @stock %>
+  <div class="card card-header mt-3 results-block">
+
+    <strong>Symbol: </strong> <%= @stock.ticker %>
+    <strong>Name: </strong> <%= @stock.name %>
+    <strong>Price: </strong> <%= @stock.last_price %>
+
+  </div>
+<% end %>
