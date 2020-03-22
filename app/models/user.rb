@@ -33,7 +33,6 @@ class User < ApplicationRecord
     # for example, user.stocks.where(id: 13).exists?
     # This will test if there's an association between the logged user and the stock id passed through
     stocks.where(id: stock.id).exists?
-
   end
 
 
@@ -42,7 +41,13 @@ class User < ApplicationRecord
     # the user is tracking less than 10 stocks and if he/she is not already tracking that stock
 
     under_stock_limit? && !stock_already_tracked?(ticker_symbol)
-
   end
+
+
+  def full_name
+    # this method returns the first_name and last_name from the model to the navbar.
+    first_name || last_name ? "#{first_name} #{last_name}" : "Anonymous"
+  end
+
 
 end

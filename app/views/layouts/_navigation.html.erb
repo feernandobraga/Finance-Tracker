@@ -24,10 +24,15 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown
+              Profile
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
+
+              <%# the link comes from DEVISE, and this also shows a different way of creating a link BLOCK %>
+              <%= link_to edit_user_registration_path, class: "dropdown-item" do %>
+                Edit Profile <%= fa_icon "edit", class: "ml-3" %>
+              <% end %>
+
               <a class="dropdown-item" href="#">Another action</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Something else here</a>
@@ -40,14 +45,24 @@
         </ul>
 
 
-        <!-- menu to the right -->
+        <!-- right-hand side menu -->
         <ul class="navbar-nav ml-auto">
 
+          <!-- Welcome, #name -->
+          <li class="nav-item mt-2 mr-3">
+            <%# this will call a method from the User mode:
+                * current_user is from DEVISE and already returns the current user
+                * full_name is located on the User model and concatenates the first and last name from the user %>
+            <%= fa_icon 'user', class: "mr-1" %> <%= current_user.full_name %>
+          </li>
+          <!-- end Welcome, #name -->
+
+          <!-- logout -->
           <li class="nav-item">
             <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-outline-danger mr-3"%>
-          </li>
+          </li><!-- end logout -->
 
-        </ul> <!-- end menu to the right -->
+        </ul> <!-- end right-hand side menu -->
 
 
         <!--search-->
