@@ -2,13 +2,48 @@
     when an invalid/blank stock symbol is entered %>
 <%= render 'layouts/messages' %>
 
-
+<%# if a stock from stocks_controller is passed, display the info %>
 <% if @stock %>
   <div class="card card-header mt-3 results-block">
 
-    <strong>Symbol: </strong> <%= @stock.ticker %>
+    <strong>Symbol: </strong> <%= @stock.ticker.upcase %>
     <strong>Name: </strong> <%= @stock.name %>
     <strong>Price: </strong> <%= @stock.last_price %>
 
+    <%# this will add a button that will post to the create action from the user_stocks_controller.
+        It's passing the current_user (helper method from the gem DEVISE) and the ticker that the user
+        searched for. The method create will have to check if the ticker already exists in the stocks table
+        and if not, it will have to do an API request to get the information
+    %>
+
+    <%# ADDED LATER: The button will only show if the can_track_stocks returns true.
+        This method is located in the Users model%>
+    <% if current_user.can_track_stock?(@stock.ticker) %>
+
+      <%= link_to "Add to portfolio", user_stocks_path(user: current_user, ticker: @stock.ticker),
+                                    class: "btn btn-sm btn-success ml-2", method: :post%>
+
+    <% else %>
+
+      <%# if the buttons doesn't show up, then it displays a badge:
+          * You are already tracking 10 stocks if the user has 10 stocks
+          * You are already tracking this stock if there's already an association between the user and the stock
+          Both methods are located on the User model
+      %>
+      <span class="badge badge-secondary ml-2">
+        You are already tracking
+
+        <% if !current_user.under_stock_limit? %>
+          10 stocks
+        <% end %>
+
+        <% if current_user.stock_already_tracked?(@stock.ticker) %>
+          this stock
+        <% end %>
+      </span>
+
+    <% end %> <%# end if current_user.can_track_stock?(@stock.ticker) %>
+
   </div>
+
 <% end %>

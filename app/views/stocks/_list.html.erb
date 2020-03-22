@@ -1,0 +1,46 @@
+
+<!--stocks table-->
+<%# only displays the table if @tracked_stocks is not empty %>
+<% if !@tracked_stocks.empty? %>
+
+  <div class="row mt-3">
+
+    <div class="col-sm-9">
+
+      <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Symbol</th>
+          <th scope="col">Name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <%# @tracked_stocks will pass the results from user.stocks
+              and the instance variable comes from the users_controller%>
+        <% @tracked_stocks.each do |stock| %>
+
+          <tr>
+            <th scope="row"><%= stock.ticker %></th>
+            <td><%= stock.name %></td>
+            <td><%= stock.last_price %></td>
+            <td>
+              <%# this Remove button will pass in the stock ID. But since we want to delete the association, I will have
+                  to handle this in the user_stocks_controller%>
+              <%= link_to 'Remove', user_stock_path(stock), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-sm btn-warning' %>
+            </td>
+          </tr>
+
+
+        <% end %>
+
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+  <!--end stocks table-->
+<% end %>
