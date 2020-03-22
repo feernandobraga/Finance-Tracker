@@ -1,0 +1,66 @@
+<h1>Friends</h1>
+
+
+<div class="search-area">
+
+  <h3>Search Friends</h3>
+
+  <%# since there is NO model that we gonna use in this page,
+      we will user form_tag instead of form_for.
+      I need to pass where the form submits the information to, and the method
+      In this case, it's submitting to search_friend_path (which is users#search)
+      To enable Ajax, I had to add remote: true, which in HTML translates to data-remote="true" %>
+
+  <%= form_tag search_friend_path, remote: true, method: :get do %>
+
+    <div class="form-row">
+
+      <!--Input field-->
+      <div class="col-sm-9">
+
+        <%# the text_field_tag requires a name for the text field - :stock
+            it also requires what will be passed through the params - params[:stock]
+            Se I'm basically passing whatever is put into the text field will be the value
+            of my parameter stock.
+            The url will be something like: localhost/my_portfolio?stock="AAPL" %>
+        <%= text_field_tag :friend, params[:friend], placeholder: "Name or email",
+                           autofocus: true, class: "form-control form-control-lg text-uppercase" %>
+
+      </div> <!-- end input field-->
+
+
+      <!--Button search stock-->
+      <div class="col-sm-3">
+
+        <%# the button tag will create a button and it requires a type %>
+        <%= button_tag type: :submit, class: "btn btn-lg btn-success" do %>
+          <%= fa_icon 'search' %>
+        <% end %>
+
+      </div> <!--end button search stock-->
+
+
+    </div>
+
+  <% end %> <%# end form_tag %>
+</div>
+
+<%# this bit will handle the Ajax request and response to display the results
+    from the the API request.
+    Since the form has the flag remote:true, this means the result will be handle by Ajax.
+    The form posts the information to the stocks_controller and calls for the method search.
+    The method search then hits the API and sends the response as JS to Ajax, that renders _result.JS.erb, which
+    then renders _result.html.erb
+%>
+<div id="results">
+</div>
+
+
+
+<%# if the friends instance variable from the users_controller is not empty,
+then render the partial friends/_list.html.erb%>
+<% if !@friends.empty? %>
+
+  <%= render 'friends/list' %>
+
+<% end %>

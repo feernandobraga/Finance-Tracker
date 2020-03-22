@@ -1,0 +1,24 @@
+<%# this will render the partial layouts/_messages.html.erb that display messages
+    when an invalid/blank user symbol is entered %>
+<%= render 'layouts/messages' %>
+
+<%# if a friend from users_controller is passed, display the info %>
+<% if @friend %>
+  <div class="card card-header mt-3 results-block">
+
+    <strong>Email: </strong> <%= @friend %>
+    <strong>First Name: </strong> <%= @friend %>
+    <strong>Last Name: </strong> <%= @friend %>
+
+    <%# this will add a button that will post to the create action from the user_stocks_controller.
+        It's passing the current_user (helper method from the gem DEVISE) and the ticker that the user
+        searched for. The method create will have to check if the ticker already exists in the stocks table
+        and if not, it will have to do an API request to get the information
+    %>
+      <%= link_to "Follow", '#',
+                  class: "btn btn-sm btn-success ml-2", method: :post%>
+
+
+  </div>
+
+<% end %>
