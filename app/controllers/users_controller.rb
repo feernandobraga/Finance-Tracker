@@ -6,6 +6,7 @@ class UsersController < ApplicationController
     # devise provies a helper method called current_user, that returns the current user logged in
     # by calling .strocks from a user, we get a list of stocks that are associated to that user
     @tracked_stocks = current_user.stocks
+    @user = current_user
 
   end # end my_portfolio
 
@@ -21,14 +22,16 @@ class UsersController < ApplicationController
     # this is the methods that wil handle the search functionality from my_friends.html.erb
     # The steps are:
     #   * Check if the user actually entered something in the search field, if not, display a flash notice
-    #   * attribute that to an instance variable called @friend
+    #   * then user the method search from the User model to retrieve the results that match the params
+    #   * after that I removed the current user from the result through the except_current_user from the User model
     #   * if the friend exists, then display it, if not, inform user not found
 
     if params[:friend].present?
 
-      @friend = params[:friend]
+      @friends = User.search(params[:friend])
+      @friends = current_user.except_current_user(@friends)
 
-      if @friend
+      if @friends
 
         respond_to do |format|
           format.js { render partial: 'users/friend_result'}
@@ -54,6 +57,15 @@ class UsersController < ApplicationController
 
 
   end # end search
+
+  def show
+
+    @user = User.find(params[:id])
+
+    # tracked_stocks is an instance variable that will be users in the users/show.html.erb
+    @tracked_stocks = @user.stocks
+
+  end
 
 
 end # end class

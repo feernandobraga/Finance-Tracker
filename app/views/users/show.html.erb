@@ -1,0 +1,48 @@
+<h2>User Details</h2>
+
+<div class="card card-header mt-3 results-block">
+
+  <table class="col-md-12 mb">
+
+    <tbody>
+
+      <tr class="table-row-space">
+
+        <td><strong>Name: </strong> <%= @user.full_name %></td>
+        <td class="pl-2"><strong>Email: </strong> <%= @user.email %></td>
+        <td class="pl-2">
+
+          <%# The block below will only display the Follow button only if the method not_friends_with? from the User model returns true
+          %>
+          <% if current_user.not_friends_with?(@user.id) %>
+
+            <%# this will post to the friendships_controller, into the create action %>
+            <%= link_to "Follow", friendships_path(friend: @user), class: "btn btn-sm btn-success ml-2", method: :post%>
+
+          <% else %>
+
+                  <span class="badge badge-secondary ml-2">
+                    You are friends
+                  </span>
+
+          <% end %>
+
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</div>
+
+<%# this piece of code is getting the @tracked_socks from users_controller#show and checking if it is empty.
+    If it's not empty, then it will render the stocks list for that particular user.
+%>
+<% if !@tracked_stocks.empty? %>
+  <%= render 'stocks/list' %>
+<% else %>
+  <p class="lead">This user is not tracking any stocks</p>
+<% end %>
+

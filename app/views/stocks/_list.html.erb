@@ -27,14 +27,64 @@
             <td><%= stock.name %></td>
             <td><%= stock.last_price %></td>
             <td>
+
+              <%# this will add a button that will post to the create action from the user_stocks_controller.
+                  It's passing the current_user (helper method from the gem DEVISE) and the ticker that the user
+                  searched for. The method create will have to check if the ticker already exists in the stocks table
+                  and if not, it will have to do an API request to get the information
+              %>
+
+              <%# ADDED LATER: The button will only show if the can_track_stocks returns true.
+                  This method is located in the Users model%>
+              <% if current_user.can_track_stock?(stock.ticker) %>
+
+                <%= link_to "Add to portfolio", user_stocks_path(user: current_user, ticker: stock.ticker),
+                            class: "btn btn-sm btn-success ml-2", method: :post%>
+
+              <% elsif current_user.id != @user.id %>
+
+                <%# if the buttons doesn't show up and the current_user id is different from the user page, then it displays a badge:
+                    * You are already tracking 10 stocks if the user has 10 stocks
+                    * You are already tracking this stock if there's already an association between the user and the stock
+                    Both methods are located on the User model
+                %>
+                <span class="badge badge-secondary ml-2">
+
+                  You are already tracking
+
+                  <% if !current_user.under_stock_limit? %>
+
+                    10 stocks
+
+                  <% end %>
+
+                  <% if current_user.stock_already_tracked?(stock.ticker) %>
+
+                    this stock
+
+                  <% end %>
+
+                </span>
+
+              <% end %> <%# end if current_user.can_track_stock?(@stock.ticker) %>
+
+
               <%# this Remove button will pass in the stock ID. But since we want to delete the association, I will have
-                  to handle this in the user_stocks_controller%>
-              <%= link_to 'Remove', user_stock_path(stock), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-sm btn-warning' %>
+                  to handle this in the user_stocks_controller
+                  ADDED LATER: it will only show the remove button if the @user.id is the same as the user logged in. %>
+
+              <% if current_user.id == @user.id %>
+
+                <%= link_to 'Remove', user_stock_path(stock), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-sm btn-warning' %>
+
+
+              <% end %> <%# if current_user.id == @user.id %>
+
             </td>
+
           </tr>
 
-
-        <% end %>
+        <% end %> <%# end @tracked_stocks.each do %>
 
         </tbody>
       </table>

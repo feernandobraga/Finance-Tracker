@@ -1,22 +1,52 @@
+<%# this partil is loaded from my_friends.html.erb %>
+
 <%# this will render the partial layouts/_messages.html.erb that display messages
     when an invalid/blank user symbol is entered %>
 <%= render 'layouts/messages' %>
 
-<%# if a friend from users_controller is passed, display the info %>
-<% if @friend %>
+<%# if the instance variable @friends from users_controller is not passed, display the info %>
+<% if @friends %>
+
   <div class="card card-header mt-3 results-block">
 
-    <strong>Email: </strong> <%= @friend %>
-    <strong>First Name: </strong> <%= @friend %>
-    <strong>Last Name: </strong> <%= @friend %>
+    <table class="col-md-12 mb">
 
-    <%# this will add a button that will post to the create action from the user_stocks_controller.
-        It's passing the current_user (helper method from the gem DEVISE) and the ticker that the user
-        searched for. The method create will have to check if the ticker already exists in the stocks table
-        and if not, it will have to do an API request to get the information
-    %>
-      <%= link_to "Follow", '#',
-                  class: "btn btn-sm btn-success ml-2", method: :post%>
+      <tbody>
+
+        <% @friends.each do |friend| %>
+
+          <tr class="table-row-space">
+
+            <td><strong>Name: </strong> <%= friend.full_name %></td>
+            <td class="pl-2"><strong>Email: </strong> <%= friend.email %></td>
+
+            <%# the link below will post to users_controller#show %>
+            <td class="pl-2"><strong>Actions: </strong><%= link_to "View Profile", user_path(friend), class: "btn btn-sm btn-outline-success ml-1" %>
+
+              <%# The block below will only display the Follow button only if the method not_friends_with? from the User model returns true
+              %>
+              <% if current_user.not_friends_with?(friend.id) %>
+
+                <%# this will post to the friendships_controller, into the create action %>
+                <%= link_to "Follow", friendships_path(friend: friend), class: "btn btn-sm btn-success ml-2", method: :post%>
+
+                  <% else %>
+
+                    <span class="badge badge-secondary ml-2">
+                      You are friends
+                    </span>
+
+                  <% end %>
+
+              </td>
+
+          </tr>
+
+      <% end %> <%# end @friends.each %>
+
+      </tbody>
+
+    </table>
 
 
   </div>

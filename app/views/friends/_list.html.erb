@@ -26,9 +26,17 @@
             <th scope="row"><%= friend.email %></th>
             <td><%= friend.first_name %></td>
             <td><%= friend.last_name %></td>
+
+
             <td>
-              <%#%>
-              <%= link_to 'Stop Following', '#', method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-sm btn-warning' %>
+              <%# the link below will post to users_controller#show %>
+              <%= link_to 'View Profile', user_path(friend), class: 'btn btn-sm btn-outline-success' %>
+
+              <%# this link_to will call the action Destroy from the friendships_controller.
+                  Since it will be passing the friend ID, I'll have to grab the user id and look for the friendship
+                  between the user and the friend to delete it
+                  %>
+              <%= link_to 'Stop Following', friendship_path(friend), method: :delete, class: 'btn btn-sm btn-warning ml-2' %>
             </td>
           </tr>
 
