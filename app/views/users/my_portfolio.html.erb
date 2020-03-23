@@ -33,7 +33,7 @@
       <div class="col-sm-3">
 
         <%# the button tag will create a button and it requires a type %>
-        <%= button_tag type: :submit, class: "btn btn-lg btn-success", data: {disable_with: "Loading..." } do %>
+        <%= button_tag type: :submit, class: "btn btn-lg btn-success", data: {disable_with: "#{fa_icon('spinner', class: 'fa-spin')}" } do %>
           <%= fa_icon 'search' %>
         <% end %>
 
